@@ -17,17 +17,35 @@ func TestStructures(t *testing.T) {
 		expectedError error
 	}{
 		{
-			name:          "simple_struct",
+			name:          "simple_struct_first_level",
 			path:          "Foo",
 			data:          struct{ Foo string }{Foo: "bar"},
 			expectedValue: "bar",
 			expectedError: nil,
 		},
 		{
-			name:          "simple_struct_pointer",
+			name:          "simple_struct_pointer_first_level",
 			path:          "Foo",
 			data:          &struct{ Foo string }{Foo: "bar"},
 			expectedValue: "bar",
+			expectedError: nil,
+		},
+		{
+			name: "simple_struct_second_level",
+			path: "Foo.Bar",
+			data: struct{ Foo struct{ Bar string } }{
+				Foo: struct{ Bar string }{Bar: "baz"},
+			},
+			expectedValue: "baz",
+			expectedError: nil,
+		},
+		{
+			name: "simple_struct_pointer_second_level",
+			path: "Foo.Bar",
+			data: struct{ Foo *struct{ Bar string } }{
+				Foo: &struct{ Bar string }{Bar: "baz"},
+			},
+			expectedValue: "baz",
 			expectedError: nil,
 		},
 	}
