@@ -31,7 +31,7 @@ func TestStructures(t *testing.T) {
 			expectedError: nil,
 		},
 		{
-			name: "simple_struct_second_level",
+			name: "struct_second_level",
 			path: "Foo.Bar",
 			data: struct{ Foo struct{ Bar string } }{
 				Foo: struct{ Bar string }{Bar: "baz"},
@@ -40,9 +40,18 @@ func TestStructures(t *testing.T) {
 			expectedError: nil,
 		},
 		{
-			name: "simple_struct_pointer_second_level",
+			name: "struct_pointer_second_level",
 			path: "Foo.Bar",
 			data: struct{ Foo *struct{ Bar string } }{
+				Foo: &struct{ Bar string }{Bar: "baz"},
+			},
+			expectedValue: "baz",
+			expectedError: nil,
+		},
+		{
+			name: "struct_behind_interface_pointer_second_level",
+			path: "Foo.Bar",
+			data: struct{ Foo interface{} }{
 				Foo: &struct{ Bar string }{Bar: "baz"},
 			},
 			expectedValue: "baz",
@@ -54,8 +63,8 @@ func TestStructures(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			assert := assert.New(t)
 			val, err := peek.Peek(c.path, c.data)
-			assert.Equal(c.expectedError, err, "Unexpected error. Expected %v, got %v")
-			assert.Equal(c.expectedValue, val, "Unexpected value. Expected %v, got %v")
+			assert.Equal(c.expectedError, err, "Unexpected error.")
+			assert.Equal(c.expectedValue, val, "Unexpected value.")
 		})
 	}
 }

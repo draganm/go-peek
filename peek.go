@@ -23,6 +23,8 @@ func peek(path []string, v reflect.Value) (reflect.Value, interface{}, error) {
 		switch v.Kind() {
 		case reflect.Ptr:
 			return peek(path, v.Elem())
+		case reflect.Interface:
+			return peek(path, v.Elem())
 		case reflect.Struct:
 			f := v.FieldByName(path[0])
 			return f, f.Interface(), nil
@@ -33,6 +35,8 @@ func peek(path []string, v reflect.Value) (reflect.Value, interface{}, error) {
 
 	switch v.Kind() {
 	case reflect.Ptr:
+		return peek(path, v.Elem())
+	case reflect.Interface:
 		return peek(path, v.Elem())
 	case reflect.Struct:
 		f := v.FieldByName(path[0])
