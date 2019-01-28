@@ -52,6 +52,15 @@ func TestStructures(t *testing.T) {
 			name: "struct_behind_interface_pointer_second_level",
 			path: "Foo.Bar",
 			data: struct{ Foo interface{} }{
+				Foo: struct{ Bar string }{Bar: "baz"},
+			},
+			expectedValue: "baz",
+			expectedError: nil,
+		},
+		{
+			name: "struct_pointer_behind_interface_pointer_second_level",
+			path: "Foo.Bar",
+			data: struct{ Foo interface{} }{
 				Foo: &struct{ Bar string }{Bar: "baz"},
 			},
 			expectedValue: "baz",
