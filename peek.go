@@ -16,6 +16,7 @@ func Call(path string, value interface{}, method string, args ...interface{}) ([
 	}
 
 	v := reflect.ValueOf(val)
+
 	m := v.MethodByName(method)
 
 	ar := []reflect.Value{}
@@ -49,7 +50,16 @@ func Peek(path string, value interface{}) (interface{}, error) {
 
 func peek(path []string, v reflect.Value) (reflect.Value, interface{}, error) {
 
+	if len(path) == 0 {
+		return v, v.Interface(), nil
+	}
+
 	if len(path) == 1 {
+
+		if path[0] == "" {
+			return v, v.Interface(), nil
+		}
+
 		switch v.Kind() {
 		case reflect.Ptr:
 			return peek(path, v.Elem())
