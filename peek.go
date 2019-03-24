@@ -1,7 +1,7 @@
 package peek
 
 import (
-	"errors"
+	"fmt"
 	"reflect"
 	"strings"
 	"unicode"
@@ -78,7 +78,7 @@ func peek(path []string, v reflect.Value) (reflect.Value, interface{}, error) {
 			f := v.FieldByName(fieldName)
 			return f, f.Interface(), nil
 		default:
-			return reflect.ValueOf(nil), nil, errors.New("not yet implemeted")
+			return reflect.ValueOf(nil), nil, fmt.Errorf("traversing %s is not yet implemeted", v.Kind().String())
 		}
 	}
 
@@ -100,7 +100,7 @@ func peek(path []string, v reflect.Value) (reflect.Value, interface{}, error) {
 		f := v.FieldByName(fieldName)
 		return peek(path[1:], f)
 	default:
-		return reflect.ValueOf(nil), nil, errors.New("not yet implemeted")
+		return reflect.ValueOf(nil), nil, fmt.Errorf("traversing %s is not yet implemeted", v.Kind().String())
 	}
 
 }
